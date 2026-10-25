@@ -1,0 +1,99 @@
+# Datenpakete (Sprachmodelle, Texterkennung, PDF-Bibliothek), die bei der Installation
+# nachgeladen werden. Diese Datei ist die EINZIGE Stelle mit der Paketquelle – ein Umzug
+# (GitHub, Cloudflare R2, Hugging Face, eigener Server) ändert nur `quelle` (und `aktuell`).
+#
+# Jedes Paket braucht: Lizenz (nur permissive, siehe deny.toml), Herkunft, Größe und SHA-256.
+# Ein Test (crates/pakete) prüft diese Angaben. Die Pakete selbst werden NIE committet.
+
+# Öffentliches Paket-Verzeichnis (GitHub): Pakete als Release-Dateien, gebaut vom Ablauf
+# „Pakete veröffentlichen“ dort (Vorlage: werkzeuge/paketquelle). Neue Pakete → neue Kennung.
+quelle = "https://github.com/HOAI-droid/DokuAnon-Pakete/releases/download/pakete-1"
+
+# Neueste Version von DokuAnon (Hinweis auf Aktualisierung, höchstens 1× täglich, abschaltbar).
+aktuell = "https://raw.githubusercontent.com/HOAI-droid/DokuAnon-Pakete/main/aktuell.json"
+
+# Plattform-Kennung: <System>-<Prozessor> wie in Rust (windows-x86_64, linux-x86_64, macos-aarch64).
+# Bauen und prüfen: python -I werkzeuge/pakete_bauen.py <ordner>
+
+[[paket]]
+name = "gliner"
+datei = "gliner_multi_pii-v1-q8.zip"
+ordner = "gliner_multi_pii-v1"
+groesse = 501445142
+sha256 = "e0b2abc2aaa3e40353da5e1284b4265bf701e4133c64ca5e1eb9c0274d59e808"
+lizenz = "Apache-2.0"
+herkunft = "https://huggingface.co/onnx-community/gliner_multi_pii-v1 (Einbettung auf 8 Bit verkleinert, werkzeuge/modelle/gliner_vorbereiten.py)"
+zweck = "Sprachmodell: Namen, Firmen, Orte, Adressen, Projekte"
+
+[[paket]]
+name = "ocr"
+datei = "ppocrv5-mobile-latin.zip"
+ordner = "ppocrv5"
+groesse = 11859194
+sha256 = "157ac050da19e34776d9f4773a67cd049fa209f073de0af493c2e23663e3c128"
+lizenz = "Apache-2.0"
+herkunft = "https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det_onnx + latin_PP-OCRv5_mobile_rec_onnx (werkzeuge/modelle/ocr_vorbereiten.py)"
+zweck = "Texterkennung für Scans und Text in Bildern"
+
+[[paket]]
+name = "onnxruntime"
+plattform = "windows-x86_64"
+datei = "onnxruntime-win-x64-1.31.0.zip"
+ebene_entfernen = true
+groesse = 82887349
+sha256 = "3958d8a44984160692c1b4ffd0de3cb48f8c39f9d34bb31e433db06e30b82195"
+lizenz = "MIT"
+herkunft = "https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0"
+zweck = "Laufzeit für die Sprachmodelle"
+
+[[paket]]
+name = "onnxruntime"
+plattform = "linux-x86_64"
+datei = "onnxruntime-linux-x64-1.31.0.tgz"
+ebene_entfernen = true
+groesse = 11408003
+sha256 = "cc5c72baf5ae5c8238a6841f0897227be2d02826b9cf98eaf02fdefaeeb03a57"
+lizenz = "MIT"
+herkunft = "https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0"
+zweck = "Laufzeit für die Sprachmodelle"
+
+[[paket]]
+name = "onnxruntime"
+plattform = "macos-aarch64"
+datei = "onnxruntime-osx-arm64-1.31.0.tgz"
+ebene_entfernen = true
+groesse = 36549009
+sha256 = "1031b36dd3bdaa8d976a6130d9cf2a05e9be320b93ae804f8427b91dc3432afc"
+lizenz = "MIT"
+herkunft = "https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0"
+zweck = "Laufzeit für die Sprachmodelle"
+
+[[paket]]
+name = "pdfium"
+plattform = "windows-x86_64"
+datei = "pdfium-win-x64.tgz"
+groesse = 3733154
+sha256 = "73cc0de638ac2095e7445bf56a38200a5b7c7ca0e9f4ba144598f2457377ac08"
+lizenz = "BSD-3-Clause"
+herkunft = "https://github.com/bblanchon/pdfium-binaries/releases/tag/chromium%2F7881"
+zweck = "PDF-Seiten lesen"
+
+[[paket]]
+name = "pdfium"
+plattform = "linux-x86_64"
+datei = "pdfium-linux-x64.tgz"
+groesse = 3644759
+sha256 = "1470e21b8b4a3b4ad7f85684e2da11d94f3b69a86d81dee11b9b6709d927ac1d"
+lizenz = "BSD-3-Clause"
+herkunft = "https://github.com/bblanchon/pdfium-binaries/releases/tag/chromium%2F7881"
+zweck = "PDF-Seiten lesen"
+
+[[paket]]
+name = "pdfium"
+plattform = "macos-aarch64"
+datei = "pdfium-mac-arm64.tgz"
+groesse = 3533019
+sha256 = "52e94ca5aa8847934330daf3f8150c190682c5ca93831468794f8b90d4392e40"
+lizenz = "BSD-3-Clause"
+herkunft = "https://github.com/bblanchon/pdfium-binaries/releases/tag/chromium%2F7881"
+zweck = "PDF-Seiten lesen"

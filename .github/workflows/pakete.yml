@@ -1,0 +1,61 @@
+name: Pakete veröffentlichen
+
+on:
+  workflow_dispatch:
+    inputs:
+      kennung:
+        description: "Kennung des Releases, z. B. pakete-1"
+        required: true
+        default: "pakete-1"
+
+permissions:
+  contents: write
+
+jobs:
+  bauen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Werkzeuge
+        run: pip install "onnxruntime==1.29.0" onnx numpy
+
+      - name: Modelle vorbereiten
+        env:
+          ORT_DISABLE_TELEMETRY: "1"
+        run: |
+          python -I werkzeuge/modelle/gliner_vorbereiten.py target/modelle/gliner_multi_pii-v1
+          python -I werkzeuge/modelle/ocr_vorbereiten.py target/modelle/ppocrv5
+
+      - name: Pakete bauen und prüfen
+        run: |
+          set +e
+          python -I werkzeuge/pakete_bauen.py ausgabe | tee pruefung.txt
+          echo "passt=$([ ${PIPESTATUS[0]} -eq 0 ] && echo ja || echo nein)" >> "$GITHUB_ENV"
+          (cd ausgabe && sha256sum * > SHA256SUMS.txt)
+          ls -la ausgabe
+
+      - name: Release anlegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "Datenpakete für DokuAnon."
+            echo
+            echo "Größe und SHA-256 passend zu pakete.toml: **${passt}**"
+            echo
+            echo '```'
+            cat pruefung.txt
+            echo '```'
+          } > notizen.md
+          gh release create "${{ inputs.kennung }}" ausgabe/* \
+            --title "Datenpakete ${{ inputs.kennung }}" --notes-file notizen.md
+
+      - name: Ergebnis
+        run: |
+          cat pruefung.txt
+          [ "$passt" = "ja" ] || echo "::warning::Größe/SHA-256 weichen von pakete.toml ab – Werte in DokuAnon anpassen."
