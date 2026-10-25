@@ -1,6 +1,6 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "datum": "2026-10-25",
-  "adresse": "https://github.com/HOAI-droid/DokuAnon/releases/latest",
-  "hinweis": ""
+  "adresse": "https://github.com/HOAI-droid/DokuAnon/releases/tag/v0.8.0",
+  "hinweis": "Antworten als Word/PDF speichern, Suche, Hilfe, Datenpakete direkt laden"
 }
