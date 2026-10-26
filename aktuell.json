@@ -1,6 +1,6 @@
 {
-  "version": "0.8.1",
-  "datum": "2026-10-25",
-  "adresse": "https://github.com/HOAI-droid/DokuAnon/releases/tag/v0.8.1",
-  "hinweis": "Fehlerbehebung: Senden an Anbieter im Internet"
+  "version": "0.9.0",
+  "datum": "2026-10-26",
+  "adresse": "https://github.com/HOAI-droid/DokuAnon/releases/tag/v0.9.0",
+  "hinweis": "Neue Formate: PowerPoint, LibreOffice, RTF, Text, CSV"
 }
